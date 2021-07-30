@@ -7,9 +7,22 @@ use App\Repository\ModeleRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     collectionOperations={
+ *          "get"={
+ *              "normalization_context"={
+ *                  "groups"={"modele:get:collection"}
+ *              }
+ *          }
+ *      },
+ *     itemOperations={"get"},
+ *     normalizationContext={
+ *          "groups"={"modele:get"}
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=ModeleRepository::class)
  */
 class Modele
@@ -18,22 +31,43 @@ class Modele
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({
+     *     "annonce:get",
+     *     "annonce:get_lite",
+     *     "marque:get",
+     *     "modele:get",
+     *     "modele:get:collection"
+     * })
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({
+     *     "annonce:get",
+     *     "annonce:get_lite",
+     *     "marque:get",
+     *     "modele:get",
+     *     "modele:get:collection"
+     * })
      */
     private $nom;
 
     /**
      * @ORM\OneToMany(targetEntity=Annonce::class, mappedBy="modele")
+     * @Groups({"modele:get"})
      */
     private $annonces;
 
     /**
      * @ORM\ManyToOne(targetEntity=Marque::class, inversedBy="modeles")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({
+     *     "annonce:get",
+     *     "annonce:get_lite",
+     *     "modele:get",
+     *     "modele:get:collection"
+     * })
      */
     private $marque;
 
