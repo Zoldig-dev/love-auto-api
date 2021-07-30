@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -56,6 +58,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Column(type="string", length=14, nullable=true)
      */
     private $siret;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Garage::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $garages;
+
+    public function __construct()
+    {
+        $this->garages = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -190,6 +202,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setSiret(?string $siret): self
     {
         $this->siret = $siret;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Garage[]
+     */
+    public function getGarages(): Collection
+    {
+        return $this->garages;
+    }
+
+    public function addGarage(Garage $garage): self
+    {
+        if (!$this->garages->contains($garage)) {
+            $this->garages[] = $garage;
+            $garage->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGarage(Garage $garage): self
+    {
+        if ($this->garages->removeElement($garage)) {
+            // set the owning side to null (unless already changed)
+            if ($garage->getUser() === $this) {
+                $garage->setUser(null);
+            }
+        }
 
         return $this;
     }
