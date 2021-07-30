@@ -19,34 +19,34 @@ class Garage
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nom;
+    private ?string $nom;
 
     /**
      * @ORM\Column(type="string", length=15)
      */
-    private $numeroTel;
+    private ?string $numeroTel;
 
     /**
      * @ORM\OneToMany(targetEntity=Annonce::class, mappedBy="garage")
      */
-    private $annonces;
+    private ArrayCollection $annonces;
 
     /**
      * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="garages")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $adresse;
+    private ?Adresse $adresse;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="garages")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    private ?User $user;
 
     public function __construct()
     {

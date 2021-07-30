@@ -9,9 +9,22 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     collectionOperations={
+ *          "get"={
+ *              "normalization_context"={
+ *                  "groups"={"annonce:get_lite"}
+ *              }
+ *          }
+ *      },
+ *     itemOperations={"get"},
+ *     normalizationContext={
+ *          "groups"={"annonce:get", "annonce:get_lite"}
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=AnnonceRepository::class)
  * @ApiFilter(RangeFilter::class, properties={"kilometrage", "anneeCirculation", "prix"})
  */
@@ -21,64 +34,76 @@ class Annonce
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({"annonce:get", "annonce:get_lite"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"annonce:get", "annonce:get_lite"})
      */
     private $titre;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"annonce:get", "annonce:get_lite"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="decimal", precision=7, scale=2)
+     * @Groups({"annonce:get", "annonce:get_lite"})
      */
     private $prix;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"annonce:get", "annonce:get_lite"})
      */
     private $kilometrage;
 
     /**
      * @ORM\Column(type="string", length=10)
+     * @Groups({"annonce:get"})
      */
     private $reference;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"annonce:get", "annonce:get_lite"})
      */
     private $anneeCirculation;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
+     * @Groups({"annonce:get")
      */
     private $prixEffectifVente;
 
     /**
      * @ORM\ManyToOne(targetEntity=Modele::class, inversedBy="annonces")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"annonce:get", "annonce:get_lite"})
      */
     private $modele;
 
     /**
      * @ORM\ManyToOne(targetEntity=TypeCarburant::class, inversedBy="annonces")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"annonce:get", "annonce:get_lite"})
      */
     private $typeCarburant;
 
     /**
      * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="annonce")
+     * @Groups({"annonce:get", "annonce:get_lite"})
      */
     private $photos;
 
     /**
      * @ORM\ManyToOne(targetEntity=Garage::class, inversedBy="annonces")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"annonce:get")
      */
     private $garage;
 
