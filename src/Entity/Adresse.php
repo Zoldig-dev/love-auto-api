@@ -7,9 +7,29 @@ use App\Repository\AdresseRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     attributes={"security" = "is_granted('ROLE_USER')"},
+ *     collectionOperations={
+ *          "post",
+ *          "get"={
+ *              "normalization_context"={
+ *                  "groups"={"adresse:get:collection"}
+ *              }
+ *          }
+ *      },
+ *     itemOperations={
+ *     "get",
+ *     "put",
+ *     "delete",
+ *     "patch",
+ * },
+ *     normalizationContext={
+ *          "groups"={"adresse:get"}
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=AdresseRepository::class)
  */
 class Adresse
@@ -18,36 +38,64 @@ class Adresse
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({
+     *     "adresse:get",
+     *     "adresse:get:collection",
+     *     "garage:get",
+     * })
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Groups({
+     *     "adresse:get",
+     *     "adresse:get:collection"
+     * })
      */
     private $ligne1;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups({
+     *     "adresse:get",
+     *     "adresse:get:collection"
+     * })
      */
     private $ligne2;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Groups({
+     *     "adresse:get",
+     *     "adresse:get:collection"
+     * })
      */
     private $ligne3;
 
     /**
      * @ORM\Column(type="string", length=5)
+     * @Groups({
+     *     "adresse:get",
+     *     "adresse:get:collection"
+     * })
      */
     private $cp;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({
+     *     "adresse:get",
+     *     "adresse:get:collection"
+     * })
      */
     private $commune;
 
     /**
      * @ORM\OneToMany(targetEntity=Garage::class, mappedBy="adresse")
+     * @Groups({
+     *     "adresse:get"
+     * })
      */
     private $garages;
 

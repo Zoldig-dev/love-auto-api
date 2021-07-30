@@ -11,14 +11,21 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
+ *     attributes={"security" = "is_granted('ROLE_USER')"},
  *     collectionOperations={
+ *          "post" = {"security" = "is_granted('ROLE_ADMIN')"},
  *          "get"={
  *              "normalization_context"={
  *                  "groups"={"marque:get:collection"}
  *              }
  *          }
  *      },
- *     itemOperations={"get"},
+ *     itemOperations={
+ *     "get",
+ *     "put" = {"security" = "is_granted('ROLE_ADMIN')"},
+ *     "delete" = {"security" = "is_granted('ROLE_ADMIN')"},
+ *     "patch" = {"security" = "is_granted('ROLE_ADMIN')"},
+ * },
  *     normalizationContext={
  *          "groups"={"marque:get"}
  *     }
@@ -33,7 +40,7 @@ class Marque
      * @ORM\Column(type="integer")
      * @Groups({
      *     "annonce:get",
-     *      "annonce:get_lite",
+     *      "annonce:get:lite",
      *      "marque:get" ,
      *      "marque:get:collection",
      *     "modele:get",
@@ -46,7 +53,7 @@ class Marque
      * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "annonce:get",
-     *      "annonce:get_lite",
+     *      "annonce:get:lite",
      *      "marque:get" ,
      *      "marque:get:collection",
      *      "modele:get",

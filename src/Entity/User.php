@@ -9,9 +9,30 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     attributes={"security" = "is_granted('ROLE_USER')"},
+ *     collectionOperations={
+ *          "post" = {"security" = "is_granted('ROLE_ADMIN')"},
+ *          "get"={
+ *              "normalization_context"={
+ *                  "groups"={"user:get:lite"},
+ *              "security" = "is_granted('ROLE_ADMIN')",
+ *              }
+ *          }
+ *      },
+ *     itemOperations={
+ *     "get",
+ *     "put" = {"security" = "is_granted('ROLE_ADMIN')"},
+ *     "delete" = {"security" = "is_granted('ROLE_ADMIN')"},
+ *     "patch" = {"security" = "is_granted('ROLE_ADMIN')"},
+ * },
+ *     normalizationContext={
+ *          "groups"={"user:get"}
+ *     }
+ * )
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -20,47 +41,86 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @Groups({
+     *     "garage:get",
+     *     "garage:get:collection",
+     *     "user:get",
+     *     "user:get:lite",
+     * })
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({
+     *     "garage:get",
+     *     "garage:get:collection",
+     *     "user:get",
+     *     "user:get:lite",
+     * })
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({
+     *     "user:get",
+*     })
      */
     private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Groups({
+     *     "user:get",
+     *     })
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({
+     *     "user:get",
+     *     "user:get:lite",
+     *     "garage:get"
+     *     })
      */
     private $nom;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({
+     *     "user:get",
+     *     "user:get:lite",
+     *     "garage:get"
+     *     })
      */
     private $prenom;
 
     /**
      * @ORM\Column(type="string", length=15, nullable=true)
+     * @Groups({
+     *     "user:get",
+     *     "user:get:lite",
+     *     "garage:get"
+     *     })
      */
     private $numTel;
 
     /**
      * @ORM\Column(type="string", length=14, nullable=true)
+     * @Groups({
+     *     "user:get",
+     *     })
      */
     private $siret;
 
     /**
      * @ORM\OneToMany(targetEntity=Garage::class, mappedBy="user", orphanRemoval=true)
+     * @Groups({
+     *     "user:get",
+     *     })
      */
     private $garages;
 

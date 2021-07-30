@@ -13,14 +13,21 @@ use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
+ *     attributes={"security" = "is_granted('ROLE_USER')"},
  *     collectionOperations={
+ *          "post",
  *          "get"={
  *              "normalization_context"={
- *                  "groups"={"annonce:get_lite"}
+ *                  "groups"={"annonce:get:lite"}
  *              }
  *          }
  *      },
- *     itemOperations={"get"},
+ *     itemOperations={
+ *     "get",
+ *     "put",
+ *     "delete",
+ *     "patch",
+ * },
  *     normalizationContext={
  *          "groups"={"annonce:get"}
  *     }
@@ -36,8 +43,9 @@ class Annonce
      * @ORM\Column(type="integer")
      * @Groups({
      *     "annonce:get",
-     *     "annonce:get_lite",
-     *     "modele:get"
+     *     "annonce:get:lite",
+     *     "modele:get",
+     *     "typeCarburant:get",
      * })
      */
     private $id;
@@ -46,8 +54,10 @@ class Annonce
      * @ORM\Column(type="string", length=255)
      * @Groups({
      *     "annonce:get",
-     *     "annonce:get_lite",
-     *     "modele:get"
+     *     "annonce:get:lite",
+     *     "modele:get",
+     *     "garage:get",
+     *     "typeCarburant:get",
      * })
      */
     private $titre;
@@ -56,7 +66,7 @@ class Annonce
      * @ORM\Column(type="text")
      * @Groups({
      *     "annonce:get",
-     *     "annonce:get_lite"
+     *     "annonce:get:lite"
      * })
      */
     private $description;
@@ -65,7 +75,7 @@ class Annonce
      * @ORM\Column(type="decimal", precision=7, scale=2)
      * @Groups({
      *     "annonce:get",
-     *     "annonce:get_lite"
+     *     "annonce:get:lite"
      * })
      */
     private $prix;
@@ -74,7 +84,7 @@ class Annonce
      * @ORM\Column(type="integer")
      * @Groups({
      *     "annonce:get",
-     *     "annonce:get_lite"
+     *     "annonce:get:lite"
      * })
      */
     private $kilometrage;
@@ -89,14 +99,14 @@ class Annonce
      * @ORM\Column(type="integer")
      * @Groups({
      *     "annonce:get",
-     *     "annonce:get_lite"
+     *     "annonce:get:lite"
      * })
      */
     private $anneeCirculation;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
-     * @Groups({"annonce:get")
+     * @Groups({"annonce:get"})
      */
     private $prixEffectifVente;
 
@@ -105,7 +115,7 @@ class Annonce
      * @ORM\JoinColumn(nullable=false)
      * @Groups({
      *     "annonce:get",
-     *     "annonce:get_lite"
+     *     "annonce:get:lite"
      * })
      */
     private $modele;
@@ -115,7 +125,7 @@ class Annonce
      * @ORM\JoinColumn(nullable=false)
      * @Groups({
      *     "annonce:get",
-     *     "annonce:get_lite"
+     *     "annonce:get:lite"
      * })
      */
     private $typeCarburant;
@@ -124,7 +134,7 @@ class Annonce
      * @ORM\OneToMany(targetEntity=Photo::class, mappedBy="annonce")
      * @Groups({
      *     "annonce:get",
-     *     "annonce:get_lite"
+     *     "annonce:get:lite"
      * })
      */
     private $photos;
@@ -132,7 +142,7 @@ class Annonce
     /**
      * @ORM\ManyToOne(targetEntity=Garage::class, inversedBy="annonces")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"annonce:get")
+     * @Groups({"annonce:get"})
      */
     private $garage;
 
