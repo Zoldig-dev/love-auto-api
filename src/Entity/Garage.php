@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -55,6 +56,15 @@ class Garage
      *     "adresse:get",
      *     "user:get",
      * })
+     * @Assert\NotNull(
+     *     message="Champ obligatoire"
+     * )
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 255,
+     *     minMessage="2 charactères minimum",
+     *     maxMessage="255 charactère maximum"
+     * )
      */
     private ?string $nom;
 
@@ -64,6 +74,14 @@ class Garage
      *     "garage:get",
      *     "garage:get:collection"
      * })
+     * @Assert\NotNull(
+     *     message="Champ obligatoire"
+     * )
+     * @Assert\Length(
+     *     min = 15,
+     *     max = 15,
+     *     exactMessage="15 charactères",
+     * )
      */
     private ?string $numeroTel;
 
