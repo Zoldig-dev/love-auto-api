@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\RangeFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -65,6 +66,15 @@ class Annonce
      *     "garage:get",
      *     "typeCarburant:get",
      * })
+     * @Assert\NotNull(
+     *     message="Champ obligatoire"
+     * )
+     * @Assert\Length(
+     *     min = 8,
+     *     max = 255,
+     *     minMessage="8 charactères minimum",
+     *     maxMessage="255 charactère maximum"
+     * )
      */
     private $titre;
 
@@ -74,6 +84,15 @@ class Annonce
      *     "annonce:get",
      *     "annonce:get:lite"
      * })
+     * @Assert\NotNull(
+     *     message="Champ obligatoire"
+     * )
+     * @Assert\Length(
+     *     min = 30,
+     *     max = 3500,
+     *     minMessage="30 charactères minimum",
+     *     maxMessage="3500 charactère maximum"
+     * )
      */
     private $description;
 
@@ -83,6 +102,10 @@ class Annonce
      *     "annonce:get",
      *     "annonce:get:lite"
      * })
+     * @Assert\NotNull(
+     *     message="Champ obligatoire"
+     * )
+     * @Assert\GreaterThanOrEqual(100)
      */
     private $prix;
 
@@ -92,12 +115,24 @@ class Annonce
      *     "annonce:get",
      *     "annonce:get:lite"
      * })
+     * @Assert\NotNull(
+     *     message="Champ obligatoire"
+     * )
+     * @Assert\GreaterThanOrEqual(100)
      */
     private $kilometrage;
 
     /**
      * @ORM\Column(type="string", length=10)
      * @Groups({"annonce:get"})
+     * @Assert\NotNull(
+     *     message="Champ obligatoire"
+     * )
+     * @Assert\Length(
+     *     min = 10,
+     *     max = 10,
+     *     exactMessage="10 charactères minimum",
+     * )
      */
     private $reference;
 
@@ -107,12 +142,20 @@ class Annonce
      *     "annonce:get",
      *     "annonce:get:lite"
      * })
+     * @Assert\NotNull(
+     *     message="Champ obligatoire"
+     * )
+     * @Assert\LessThan("today")
      */
     private $anneeCirculation;
 
     /**
      * @ORM\Column(type="decimal", precision=10, scale=2)
      * @Groups({"annonce:get"})
+     * @Assert\NotNull(
+     *     message="Champ obligatoire"
+     * )
+     * @Assert\GreaterThanOrEqual(100)
      */
     private $prixEffectifVente;
 
@@ -142,6 +185,12 @@ class Annonce
      *     "annonce:get",
      *     "annonce:get:lite"
      * })
+     * @Assert\Count(
+     *     min=1,
+     *     max=10,
+     *     minMessage="Une photo minimum",
+     *     maxMessage="Dix photos maximum"
+     * )
      */
     private $photos;
 

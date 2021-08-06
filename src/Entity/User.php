@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -58,6 +59,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     "user:get",
      *     "user:get:lite",
      * })
+     * @Assert\Email(
+     *     message="L'email '{{ value }}' n'est pas valide"
+     * )
      */
     private $email;
 
@@ -85,6 +89,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     "user:get:lite",
      *     "garage:get"
      *     })
+     * @Assert\NotNull(
+     *     message="Champ obligatoire"
+     * )
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 255,
+     *     minMessage="2 charactères minimum",
+     *     maxMessage="255 charactère maximum"
+     * )
      */
     private $nom;
 
@@ -95,6 +108,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     "user:get:lite",
      *     "garage:get"
      *     })
+     * @Assert\NotNull(
+     *     message="Champ obligatoire"
+     * )
+     * @Assert\Length(
+     *     min = 2,
+     *     max = 255,
+     *     minMessage="2 charactères minimum",
+     *     maxMessage="255 charactère maximum"
+     * )
      */
     private $prenom;
 
@@ -105,6 +127,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      *     "user:get:lite",
      *     "garage:get"
      *     })
+     * @Assert\Length(
+     *     min = 15,
+     *     max = 15,
+     *     exactMessage="15 charactères",
+     * )
      */
     private $numTel;
 
@@ -113,6 +140,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @Groups({
      *     "user:get",
      *     })
+     * @Assert\Length(
+     *     min = 14,
+     *     max = 14,
+     *     exactMessage="14 charactères",
+     * )
      */
     private $siret;
 

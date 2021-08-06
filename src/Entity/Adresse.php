@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -52,6 +53,15 @@ class Adresse
      *     "adresse:get",
      *     "adresse:get:collection"
      * })
+     * @Assert\NotNull(
+     *     message="Champ obligatoire"
+     * )
+     * @Assert\Length(
+     *     min = 5,
+     *     max = 255,
+     *     minMessage="5 charactères minimum",
+     *     maxMessage="255 charactère maximum"
+     * )
      */
     private $ligne1;
 
@@ -61,6 +71,12 @@ class Adresse
      *     "adresse:get",
      *     "adresse:get:collection"
      * })
+     * @Assert\Length(
+     *     min = 1,
+     *     max = 255,
+     *     minMessage="1 charactères minimum",
+     *     maxMessage="255 charactère maximum"
+     * )
      */
     private $ligne2;
 
@@ -70,6 +86,12 @@ class Adresse
      *     "adresse:get",
      *     "adresse:get:collection"
      * })
+     * @Assert\Length(
+     *     min = 1,
+     *     max = 255,
+     *     minMessage="1 charactères minimum",
+     *     maxMessage="255 charactère maximum"
+     * )
      */
     private $ligne3;
 
@@ -79,6 +101,14 @@ class Adresse
      *     "adresse:get",
      *     "adresse:get:collection"
      * })
+     * @Assert\NotNull(
+     *     message="Champ obligatoire"
+     * )
+     * @Assert\Length(
+     *     min = 5,
+     *     max = 5,
+     *     exactMessage="5 charactères minimum",
+     * )
      */
     private $cp;
 
@@ -88,6 +118,15 @@ class Adresse
      *     "adresse:get",
      *     "adresse:get:collection"
      * })
+     * @Assert\NotNull(
+     *     message="Champ obligatoire"
+     * )
+     * @Assert\Length(
+     *     min = 1,
+     *     max = 255,
+     *     minMessage="1 charactères minimum",
+     *     maxMessage="255 charactère maximum"
+     * )
      */
     private $commune;
 
