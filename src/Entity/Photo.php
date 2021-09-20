@@ -8,9 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ApiResource(
- *     attributes={"security" = "is_granted('ROLE_USER')"},
- * )
+ * @ApiResource()
  * @ORM\Entity(repositoryClass=PhotoRepository::class)
  */
 class Photo

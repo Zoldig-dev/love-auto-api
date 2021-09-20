@@ -91,7 +91,7 @@ class Garage
      *     "garage:get",
      * })
      */
-    private ArrayCollection $annonces;
+    private $annonces;
 
     /**
      * @ORM\ManyToOne(targetEntity=Adresse::class, inversedBy="garages")
